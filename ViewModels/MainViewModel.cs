@@ -48,9 +48,24 @@ namespace BirdMaker.ViewModels
             }
         }
 
+        private void Bird_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BirdViewModel.BirdSaved) && BirdVm.BirdSaved)
+            {
+                OptionsVm.NewBirdName = "Enter Bird Name";
+                OptionsVm.FileLocation = null;
+                OptionsVm.BirdCreated = false;
+                CurrentView = OptionsVm;
+
+                BirdVm = null;
+            }
+        }
+
         private void CreateBirdView()
         {
             BirdVm = new BirdViewModel(OptionsVm.NewBirdName);
+            BirdVm.PropertyChanged += Bird_PropertyChanged;
+
             CurrentView = BirdVm;
 
             // else:

@@ -265,7 +265,8 @@
                 Margin ="20"
                 Background="#FF7272BD"
                 VerticalAlignment="Stretch"
-                HorizontalAlignment="Stretch">
+                HorizontalAlignment="Stretch"
+                Command="{Binding SaveBirdViewModelCommand}">
             <TextBlock Text="Save Bird"/>
         </Button>
     </Grid>

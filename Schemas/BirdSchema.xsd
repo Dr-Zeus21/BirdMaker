@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+	<xs:element name="BirdData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string" minOccurs="0"/>
+				<xs:element name="CanFly" type="xs:boolean"/>
+				<xs:element name="HasTalons" type="xs:boolean"/>
+				<xs:element name="NumberOfWings">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="0"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NeedsHelmet" type="xs:boolean"/>
+				<xs:element name="Color" type="ColorType"/>
+				<xs:element name="BeakType" type="BeakType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="ColorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Gray"/>
+			<xs:enumeration value="White"/>
+			<xs:enumeration value="Black"/>
+			<xs:enumeration value="Brown"/>
+			<xs:enumeration value="Red"/>
+			<xs:enumeration value="Orange"/>
+			<xs:enumeration value="Yellow"/>
+			<xs:enumeration value="Green"/>
+			<xs:enumeration value="Blue"/>
+			<xs:enumeration value="Indigo"/>
+			<xs:enumeration value="Violet"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="BeakType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Normal"/>
+			<xs:enumeration value="Hooked"/>
+			<xs:enumeration value="Pointy"/>
+			<xs:enumeration value="Jagged"/>
+			<xs:enumeration value="UpsideDown"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

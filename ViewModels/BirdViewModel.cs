@@ -1,100 +1,100 @@
-﻿using LearningApp1.Core;
+﻿using System;
+using System.IO;
+using System.Xml;
+using BirdMaker.Models;
+using LearningApp1.Core;
 
 namespace BirdMaker.ViewModels
 {
-    public class BirdViewModel : ObservableObject
+    internal class BirdViewModel : ObservableObject
     {
-        // Beak types that a bird can have
-        public enum beakType
-        {
-            Normal,
-            Hooked,
-            Pointy,
-            Jagged,
-            UpsideDown
-        }
-
-        // Color options for birds
-        public enum color
-        {
-            Gray,
-            White,
-            Black,
-            Brown,
-            Red,
-            Orange,
-            Yellow,
-            Green,
-            Blue,
-            Indigo,
-            Violet
-        }
         public string Name
         {
-            get => (_name);
+            get => (_bird.Name);
             set
             {
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool CanFly
-        {
-            get => (_canFly);
-            set
-            {
-                _canFly = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool HasTalons
-        {
-            get => (_hasTalons);
-            set
-            {
-                _hasTalons = value;
-                OnPropertyChanged();
-            }
-        }
-        public int NumberOfWings
-        {
-            get => (_numberOfWings);
-            set
-            {
-                _numberOfWings = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool NeedsHelmet
-        {
-            get => (_needsHelmet);
-            set
-            {
-                _needsHelmet = value;
-                OnPropertyChanged();
-            }
-        }
-        public color Color
-        {
-            get => (_color);
-            set
-            {
-                _color = value;
-                OnPropertyChanged();
-            }
-        }
-        public beakType BeakType
-        {
-            get => (_beakType);
-            set
-            {
-                _beakType = value;
+                _bird.Name = value;
                 OnPropertyChanged();
             }
         }
 
-        public BirdViewModel(string inName, bool inCanFly = true, bool inHasTalons = true, int inNumberOfWings = 2, bool inNeedsHelmet = false, color inColor = color.Gray, beakType inBeakType = beakType.Normal)
+        public bool CanFly
         {
+            get => (_bird.CanFly);
+            set
+            {
+                _bird.CanFly = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HasTalons
+        {
+            get => (_bird.HasTalons);
+            set
+            {
+                _bird.HasTalons = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int NumberOfWings
+        {
+            get => (_bird.NumberOfWings);
+            set
+            {
+                _bird.NumberOfWings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool NeedsHelmet
+        {
+            get => (_bird.NeedsHelmet);
+            set
+            {
+                _bird.NeedsHelmet = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Bird.color Color
+        {
+            get => (_bird.Color);
+            set
+            {
+                _bird.Color = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Bird.beakType BeakType
+        {
+            get => (_bird.BeakType);
+            set
+            {
+                _bird.BeakType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool BirdSaved
+        {
+            get => (_birdSaved);
+            set
+            {
+                _birdSaved = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand SaveBirdViewModelCommand { get; set; }
+
+
+        public BirdViewModel(string inName, bool inCanFly = true, bool inHasTalons = true, int inNumberOfWings = 2, bool inNeedsHelmet = false, Bird.color inColor = Bird.color.Gray, Bird.beakType inBeakType = Bird.beakType.Normal)
+        {
+            _bird = new Bird();
+
             Name = inName;
             CanFly = inCanFly;
             HasTalons = inHasTalons;
@@ -102,14 +102,64 @@ namespace BirdMaker.ViewModels
             NeedsHelmet = inNeedsHelmet;
             Color = inColor;
             BeakType = inBeakType;
+
+            SaveBirdViewModelCommand = new RelayCommand(o =>
+            {
+                if (CheckParameters())
+                {
+                    SaveBirdToXml();
+                    BirdSaved = true;
+                }
+            });
         }
 
-        private string _name;
-        private bool _canFly;
-        private bool _hasTalons;
-        private int _numberOfWings;
-        private bool _needsHelmet;
-        private color _color;
-        private beakType _beakType;
+        private Bird _bird;
+
+        private bool _birdSaved = false;
+        private bool CheckParameters()
+        {
+            if (NumberOfWings < 0)
+            {
+                return false;
+            }
+
+            if (!Enum.IsDefined(typeof(Bird.color), Color))
+            {
+                return false;
+            }
+
+            if (!Enum.IsDefined(typeof(Bird.beakType), BeakType))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void SaveBirdToXml()
+        {
+            var settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "  ",
+                NewLineOnAttributes = false
+            };
+
+            using (XmlWriter writer = XmlWriter.Create(Name + ".xml", settings))
+            {
+                writer.WriteStartDocument();
+                    writer.WriteStartElement("Bird");
+
+                        writer.WriteElementString("Name", Name);
+                        writer.WriteElementString("CanFly", CanFly.ToString().ToLower());
+                        writer.WriteElementString("HasTalons", HasTalons.ToString().ToLower());
+                        writer.WriteElementString("NumberOfWings", NumberOfWings.ToString());
+                        writer.WriteElementString("NeedsHelmet", NeedsHelmet.ToString().ToLower());
+                        writer.WriteElementString("Color", Color.ToString());
+                        writer.WriteElementString("BeakType", BeakType.ToString());
+
+                    writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
     }
 }
