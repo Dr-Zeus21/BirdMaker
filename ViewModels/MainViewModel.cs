@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,42 +24,49 @@ namespace BirdMaker.ViewModels
 
         public BirdViewModel BirdVm { get; set; }
 
-        public RelayCommand BirdViewCommand { get; set; }
-
-        public RelayCommand OptionsCommand { get; set; }
-
-        private object _currentView;
-
         public MainViewModel()
         {
             OptionsVm = new OptionsViewModel();
+            OptionsVm.PropertyChanged += Options_PropertyChanged;
 
             CurrentView = OptionsVm;
-
-            BirdViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = BirdVm;
-            });
-
-            OptionsCommand = new RelayCommand(o =>
-            {
-                CurrentView = OptionsVm;
-            });
         }
 
-        public void MakeBirdView()
+        private object _currentView;
+
+        private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Two options, loaded bird or new bird
-            // if new bird:
-            // get Options.BirdName
-            // set BirdVm to a new BirdViewModel with Options.BirdName
-            // Set CurrentView to BirdVm
+            if (e.PropertyName == nameof(OptionsViewModel.BirdCreated) && OptionsVm.BirdCreated)
+            {
+                CreateBirdView();
+            }
+
+            if (e.PropertyName == nameof(OptionsViewModel.FileLocation))
+            {
+                // need to also check that this is a valid Bird, maybe we try to parse it here before trying to load it
+                LoadBirdView();
+            }
+        }
+
+        private void CreateBirdView()
+        {
+            BirdVm = new BirdViewModel(OptionsVm.NewBirdName);
+            CurrentView = BirdVm;
 
             // else:
             // load Bird.xml
             // get Bird.xml.BirdName
             // set BirdVm to a new BirdViewModel with Bird.xml.BirdName
             // Set CurrentView to BirdVm
+
+            // We need to get bird if loading, or make a new one with the input name and defaults if creating one
         }
+
+        private void LoadBirdView()
+        {
+            // either create a birdvm or load a birdvm (not sure how xml read/write works), set BirdVm to the new birdvm, and set CurrentView to BirdVm
+        }
+
+        // need to bind to button events in BirdViewModel and OptionsViewModel to update MainViewModel's CurrentView
     }
 }

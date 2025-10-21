@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BirdMaker"
         mc:Ignorable="d"
-        Title="BirdApp" Height="450" Width="800">
+        Title="BirdApp" Height="600" Width="1000">
     <Border Background="#FF18183E">
-
+        <ContentControl Margin="20"
+                        Content="{Binding CurrentView}">
+        </ContentControl>
     </Border>
 </Window>

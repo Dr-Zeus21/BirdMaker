@@ -2,8 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:BirdMaker"
+             xmlns:viewModel="clr-namespace:BirdMaker.ViewModels"
+             xmlns:view="clr-namespace:BirdMaker.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewModel:OptionsViewModel}">
+                <view:OptionsView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:BirdViewModel}">
+                <view:BirdView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

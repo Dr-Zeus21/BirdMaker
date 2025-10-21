@@ -15,9 +15,9 @@
 
         <TextBlock Grid.Row="0"
                    Foreground="AntiqueWhite"
-                   Text ="Birds Name"
                    FontSize="50"
-                   TextAlignment="Center"/>
+                   TextAlignment="Center"
+                   Text="{Binding Name}"/>
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -45,12 +45,39 @@
                                FontSize="40"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="Yes"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <ToggleButton Grid.Row="1"
+                                  Margin="20,10"
+                                  IsChecked="{Binding CanFly}">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="Background" Value="Black"/>
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="ButtonBorder"
+                                                    VerticalAlignment="Stretch"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5"
+                                                    Padding="4"
+                                                    Margin="1">
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Green"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Red"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
                 </Grid>
             </Border>
 
@@ -69,12 +96,39 @@
                                FontSize="40"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="Yes"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <ToggleButton Grid.Row="1"
+                                  Margin="20,10"
+                                  IsChecked="{Binding HasTalons}">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="Background" Value="Black"/>
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="ButtonBorder"
+                                                    VerticalAlignment="Stretch"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5"
+                                                    Padding="4"
+                                                    Margin="1">
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Green"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Red"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
                 </Grid>
             </Border>
 
@@ -89,16 +143,43 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0"
                                Foreground="AntiqueWhite"
-                               Text ="Number of Wings"
-                               FontSize="30"
+                               Text ="Needs Helmet"
+                               FontSize="38"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="2"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <ToggleButton Grid.Row="1"
+                                  Margin="20,10"
+                                  IsChecked="{Binding NeedsHelmet}">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="Background" Value="Black"/>
+                                <Setter Property="IsChecked" Value="False"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="ButtonBorder"
+                                                    VerticalAlignment="Stretch"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5"
+                                                    Padding="4"
+                                                    Margin="1">
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Green"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter TargetName="ButtonBorder" Property="Background" Value="Red"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
                 </Grid>
             </Border>
 
@@ -117,12 +198,14 @@
                                FontSize="40"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="Normal"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1"
+                             Background="Transparent"
+                             Foreground="AntiqueWhite"
+                             BorderThickness="0"
+                             TextAlignment="Center"
+                             VerticalAlignment="Center"
+                             FontSize="50"
+                             Text="{Binding BeakType, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Border>
 
@@ -141,12 +224,14 @@
                                FontSize="40"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="Gray"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1"
+                             Background="Transparent"
+                             Foreground="AntiqueWhite"
+                             BorderThickness="0"
+                             TextAlignment="Center"
+                             VerticalAlignment="Center"
+                             FontSize="50"
+                             Text="{Binding Color, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Border>
 
@@ -161,16 +246,18 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0"
                                Foreground="AntiqueWhite"
-                               Text ="Needs Helmet"
-                               FontSize="38"
+                               Text ="Number of Wings"
+                               FontSize="30"
                                TextAlignment="Center"
                                VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1"
-                               Foreground="AntiqueWhite"
-                               Text ="Yes"
-                               FontSize="40"
-                               TextAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="1"
+                             Background="Transparent"
+                             Foreground="AntiqueWhite"
+                             BorderThickness="0"
+                             TextAlignment="Center"
+                             VerticalAlignment="Center"
+                             FontSize="50"
+                             Text="{Binding NumberOfWings, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Border>
         </Grid>

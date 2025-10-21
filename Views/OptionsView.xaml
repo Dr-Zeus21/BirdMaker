@@ -26,10 +26,11 @@
                      TextAlignment="Center"
                      VerticalAlignment="Center"
                      FontSize="50"
-                     Text="Enter New Bird Name">
+                     Text="{Binding NewBirdName, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
             <Button Grid.Row="1" 
-                    Background="#FF7272BD">
+                    Background="#FF7272BD"
+                    Command="{Binding CreateBirdViewModelCommand}">
                 <TextBlock Text="Create New Bird"/>
             </Button>
         </Grid>
@@ -40,18 +41,18 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0"
+            <TextBlock Grid.Row="0"
                      Margin="0,0,0,10"
                      Background="Transparent"
                      Foreground="AntiqueWhite"
-                     BorderThickness="0"
                      TextAlignment="Center"
                      VerticalAlignment="Center"
                      FontSize="50"
                      Text="Open Existing Bird">
-            </TextBox>
+            </TextBlock>
             <Button Grid.Row="1" 
-                    Background="#FF7272BD">
+                    Background="#FF7272BD"
+                    Command="{Binding LoadBirdViewModelCommand}">
                 <TextBlock Text="Open Existing Bird"/>
             </Button>
         </Grid>
