@@ -59,42 +59,38 @@ namespace BirdMaker.ViewModels
 
             LoadBirdViewModelCommand = new RelayCommand(o =>
             {
-                // copied from microsoft
-                // Configure open file dialog box
                 var dialog = new Microsoft.Win32.OpenFileDialog
                 {
-                    FileName = "Bird",
-                    DefaultExt = ".xml",
                     Filter = "XML Files (.xml)|*.xml"
                 };
 
                 // Show open file dialog box
                 bool? result = dialog.ShowDialog();
 
-                // Process open file dialog box results
                 if (result == true)
                 {
-                    ValidateXml(dialog.FileName);
+                    if (ValidateXml(dialog.FileName))
+                    {
+                        FilePath = dialog.FileName;
+                    }
                 }
             });
         }
 
-        // need to dig into this
-        private void ValidateXml(string xmlPath)
+        // Check that the Xml is valid against the BirdSchema.xsd, and if so
+        private bool ValidateXml(string xmlPath)
         {
             XmlSchemaSet schemas = new XmlSchemaSet();
 
-            // get the embedded resource stream
-            var assembly = Assembly.GetExecutingAssembly();
             string birdSchema = "BirdMaker.Schemas.BirdSchema.xsd"; // would prefer not to hard code the schema location, but it's fine for this application
 
             // find and add the schema to schemas if valid
-            using (Stream? schemaStream = assembly.GetManifestResourceStream(birdSchema))
+            using (Stream? schemaStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(birdSchema))
             {
                 if (schemaStream == null)
                 {
                     MessageBox.Show($"Could not find embedded schema: {birdSchema}");
-                    return;
+                    return false;
                 }
 
                 schemas.Add(null, XmlReader.Create(schemaStream));
@@ -116,11 +112,13 @@ namespace BirdMaker.ViewModels
                 try
                 {
                     while (reader.Read()) { }
-                    FilePath = xmlPath;
+                    return true;
                 }
+
                 catch (XmlException ex)
                 {
                     MessageBox.Show($"XML Exception: {ex.Message}", "Validation Error");
+                    return false;
                 }
             }
         }

@@ -135,7 +135,7 @@ namespace BirdMaker.ViewModels
             return true;
         }
 
-        // need to dig into this
+        // Wites the bird using Name.xml to the debug folder
         private void SaveBirdToXml()
         {
             var settings = new XmlWriterSettings
@@ -158,7 +158,7 @@ namespace BirdMaker.ViewModels
                         writer.WriteElementString("Color", Color.ToString());
                         writer.WriteElementString("NumberOfWings", NumberOfWings.ToString());
 
-                writer.WriteEndElement();
+                    writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
         }
