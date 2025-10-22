@@ -135,6 +135,7 @@ namespace BirdMaker.ViewModels
             return true;
         }
 
+        // need to dig into this
         private void SaveBirdToXml()
         {
             var settings = new XmlWriterSettings
@@ -152,12 +153,12 @@ namespace BirdMaker.ViewModels
                         writer.WriteElementString("Name", Name);
                         writer.WriteElementString("CanFly", CanFly.ToString().ToLower());
                         writer.WriteElementString("HasTalons", HasTalons.ToString().ToLower());
-                        writer.WriteElementString("NumberOfWings", NumberOfWings.ToString());
                         writer.WriteElementString("NeedsHelmet", NeedsHelmet.ToString().ToLower());
-                        writer.WriteElementString("Color", Color.ToString());
                         writer.WriteElementString("BeakType", BeakType.ToString());
+                        writer.WriteElementString("Color", Color.ToString());
+                        writer.WriteElementString("NumberOfWings", NumberOfWings.ToString());
 
-                    writer.WriteEndElement();
+                writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
         }

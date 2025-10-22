@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Xml;
+using System.Xml.Schema;
 using LearningApp1.Core;
 
 namespace BirdMaker.ViewModels
@@ -29,12 +30,12 @@ namespace BirdMaker.ViewModels
             }
         }
 
-        public string FileLocation
+        public string FilePath
         {
-            get { return _fileLocation; }
+            get { return _filePath; }
             set
             {
-                _fileLocation = value;
+                _filePath = value;
                 OnPropertyChanged();
             }
         }
@@ -44,7 +45,7 @@ namespace BirdMaker.ViewModels
 
         private string _newBirdName = "Enter Bird Name";
         private bool _birdCreated = false;
-        private string _fileLocation;
+        private string _filePath;
 
         public OptionsViewModel()
         {
@@ -58,8 +59,70 @@ namespace BirdMaker.ViewModels
 
             LoadBirdViewModelCommand = new RelayCommand(o =>
             {
+                // copied from microsoft
+                // Configure open file dialog box
+                var dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    FileName = "Bird",
+                    DefaultExt = ".xml",
+                    Filter = "XML Files (.xml)|*.xml"
+                };
 
+                // Show open file dialog box
+                bool? result = dialog.ShowDialog();
+
+                // Process open file dialog box results
+                if (result == true)
+                {
+                    ValidateXml(dialog.FileName);
+                }
             });
+        }
+
+        // need to dig into this
+        private void ValidateXml(string xmlPath)
+        {
+            XmlSchemaSet schemas = new XmlSchemaSet();
+
+            // get the embedded resource stream
+            var assembly = Assembly.GetExecutingAssembly();
+            string birdSchema = "BirdMaker.Schemas.BirdSchema.xsd"; // would prefer not to hard code the schema location, but it's fine for this application
+
+            // find and add the schema to schemas if valid
+            using (Stream? schemaStream = assembly.GetManifestResourceStream(birdSchema))
+            {
+                if (schemaStream == null)
+                {
+                    MessageBox.Show($"Could not find embedded schema: {birdSchema}");
+                    return;
+                }
+
+                schemas.Add(null, XmlReader.Create(schemaStream));
+            }
+
+            XmlReaderSettings settings = new XmlReaderSettings
+            {
+                Schemas = schemas,
+                ValidationType = ValidationType.Schema
+            };
+
+            settings.ValidationEventHandler += (sender, e) =>
+            {
+                MessageBox.Show($"[{e.Severity}] {e.Message}", "XML Validation");
+            };
+
+            using (XmlReader reader = XmlReader.Create(xmlPath, settings))
+            {
+                try
+                {
+                    while (reader.Read()) { }
+                    FilePath = xmlPath;
+                }
+                catch (XmlException ex)
+                {
+                    MessageBox.Show($"XML Exception: {ex.Message}", "Validation Error");
+                }
+            }
         }
     }
 }
