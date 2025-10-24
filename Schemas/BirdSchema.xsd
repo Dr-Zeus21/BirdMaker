@@ -5,19 +5,19 @@
 	<xs:element name="Bird">
 		<xs:complexType>
 			<xs:all>
-				<xs:element name="Name" type="xs:string" minOccurs="0"/>
-				<xs:element name="CanFly" type="xs:boolean"/>
-				<xs:element name="HasTalons" type="xs:boolean"/>
-				<xs:element name="NumberOfWings">
+				<xs:element name="Name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="CanFly" type="xs:boolean" maxOccurs="1"/>
+				<xs:element name="HasTalons" type="xs:boolean" maxOccurs="1"/>
+				<xs:element name="NumberOfWings" maxOccurs="1">
 					<xs:simpleType>
 						<xs:restriction base="xs:int">
 							<xs:minInclusive value="0"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
-				<xs:element name="NeedsHelmet" type="xs:boolean"/>
-				<xs:element name="Color" type="ColorType"/>
-				<xs:element name="BeakType" type="BeakType"/>
+				<xs:element name="NeedsHelmet" type="xs:boolean" maxOccurs="1"/>
+				<xs:element name="Color" type="ColorType" maxOccurs="1"/>
+				<xs:element name="BeakType" type="BeakType" maxOccurs="1"/>
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

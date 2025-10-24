@@ -90,7 +90,6 @@ namespace BirdMaker.ViewModels
 
         public RelayCommand SaveBirdViewModelCommand { get; set; }
 
-
         public BirdViewModel(string inName, bool inCanFly = true, bool inHasTalons = true, int inNumberOfWings = 2, bool inNeedsHelmet = false, Bird.color inColor = Bird.color.Gray, Bird.beakType inBeakType = Bird.beakType.Normal)
         {
             _bird = new Bird();
@@ -145,6 +144,7 @@ namespace BirdMaker.ViewModels
                 NewLineOnAttributes = false
             };
 
+            // look into XDocument, make these Attributes instead of Elements
             using (XmlWriter writer = XmlWriter.Create(Name + ".xml", settings))
             {
                 writer.WriteStartDocument();

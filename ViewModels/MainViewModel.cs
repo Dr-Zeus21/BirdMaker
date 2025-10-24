@@ -8,7 +8,7 @@ namespace BirdMaker.ViewModels
 {
     internal class MainViewModel : ObservableObject
     { 
-        public object CurrentView
+        public ObservableObject CurrentView
         {
             get { return _currentView; }
             set
@@ -30,7 +30,7 @@ namespace BirdMaker.ViewModels
             CurrentView = OptionsVm;
         }
 
-        private object _currentView;
+        private ObservableObject _currentView;
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -50,9 +50,7 @@ namespace BirdMaker.ViewModels
         {
             if (e.PropertyName == nameof(BirdViewModel.BirdSaved) && BirdVm.BirdSaved)
             {
-                OptionsVm.NewBirdName = "Enter Bird Name";
-                OptionsVm.FilePath = null;
-                OptionsVm.BirdCreated = false;
+                OptionsVm.Reinitialize();
                 CurrentView = OptionsVm;
 
                 BirdVm = null;
@@ -94,7 +92,5 @@ namespace BirdMaker.ViewModels
 
             CurrentView = BirdVm;
         }
-
-        // need to bind to button events in BirdViewModel and OptionsViewModel to update MainViewModel's CurrentView
     }
 }
